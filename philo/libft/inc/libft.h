@@ -6,7 +6,7 @@
 /*   By: tmatias <tmatias@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 18:14:45 by tmatias           #+#    #+#             */
-/*   Updated: 2021/07/28 17:19:32 by tmatias          ###   ########.fr       */
+/*   Updated: 2021/08/02 16:24:19 by tmatias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int					ft_tolower(int c);
 int					ft_toupper(int c);
 int					ft_memdel(void **ptr);
 int					ft_gnl(int fd, char **line);
+int					ft_string_is_positive_number(char *str);
 
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t count, size_t size);

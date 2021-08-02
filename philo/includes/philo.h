@@ -16,4 +16,6 @@ typedef struct s_params
 	int	optional;
 }			t_params;
 
+extern t_params	g_params;
+
 #endif

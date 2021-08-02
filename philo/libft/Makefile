@@ -6,7 +6,7 @@
 #    By: tmatias <tmatias@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/20 12:26:37 by tmatias           #+#    #+#              #
-#    Updated: 2021/07/28 17:19:47 by tmatias          ###   ########.fr        #
+#    Updated: 2021/08/02 16:23:02 by tmatias          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC_NAMES = ft_abs.c\
 				ft_lstiter.c\
 				ft_split.c\
 				ft_bzero.c\
+				ft_string_is_positive_number.c\
 				ft_lstlast.c\
 				ft_strchr.c\
 				ft_calloc.c\
