@@ -6,7 +6,7 @@
 #    By: tmatias <tmatias@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/15 15:21:21 by anleclab          #+#    #+#              #
-#    Updated: 2021/07/29 16:14:42 by tmatias          ###   ########.fr        #
+#    Updated: 2021/08/05 19:45:26 by tmatias          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,12 @@ NAME = philo
 
 CFLAGS = -Wall -Wextra -Werror 
 
-SRC = main.c
+SRC = main.c\
+		fork_and_eat.c\
+		time_stuff.c\
+		write_messages.c\
+		sleep.c\
+		die.c
 SRCSFD = srcs/
 OBJSFD = objs/
 OBJS = $(addprefix $(OBJSFD),$(SRC:.c=.o))

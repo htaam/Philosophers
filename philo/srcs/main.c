@@ -6,7 +6,7 @@
 /*   By: tmatias <tmatias@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 15:50:08 by tmatias           #+#    #+#             */
-/*   Updated: 2021/08/02 18:12:35 by tmatias          ###   ########.fr       */
+/*   Updated: 2021/08/05 20:29:25 by tmatias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 /* global variable declaration */
 t_params		g_params;
-pthread_mutex_t	*g_lock;
 
 void	handle_inputs(int argc, char **argv)
 {
+	g_params.optional = 200;
 	if (argc < 5 || argc > 6)
 		ft_exit("Invalid input");
 	if (!ft_string_is_positive_number(argv[1])
@@ -47,11 +47,32 @@ void	handle_inputs(int argc, char **argv)
 
 void	*philo_tread(void *a)
 {
-	int	id;
+	int			id;
 
 	id = ft_atoi(a);
-	printf("id = %d\n", id);
+	while (g_params.times_eaten[id - 1] <= g_params.optional)
+	{
+		if (!g_params.stop)
+			try_to_eat(id);
+		if (!g_params.stop)
+			go_to_sleep(id);
+		if (g_params.stop)
+			return (0);
+		g_params.times_eaten[id - 1]++;
+	}
 	return (0);
+}
+
+void	init(void)
+{
+	gettimeofday(&g_params.start_time, NULL);
+	pthread_mutex_init(&g_params.write, NULL);
+	pthread_mutex_init(&g_params.get_time, NULL);
+	g_params.times_eaten = malloc (sizeof(int) * g_params.n_philo);
+	g_params.fork_mutex = malloc (sizeof(pthread_mutex_t) * g_params.n_philo);
+	g_params.last_eaten = malloc (sizeof(struct timeval) * g_params.n_philo);
+	g_params.last_sleep = malloc (sizeof(struct timeval) * g_params.n_philo);
+	g_params.stop = 0;
 }
 
 int	main(int argc, char **argv)
@@ -61,15 +82,29 @@ int	main(int argc, char **argv)
 	char			*a;
 
 	handle_inputs(argc, argv);
+	init();
 	philo = malloc(sizeof(pthread_t) * g_params.n_philo);
-	g_lock = malloc (sizeof(pthread_mutex_t) * g_params.n_philo);
 	i = 1;
 	while (i <= g_params.n_philo)
 	{
 		a = ft_itoa(i);
-		pthread_create(&philo[i], NULL, philo_tread, (void *)a);
+		g_params.times_eaten[i - 1] = 1;
+		gettimeofday(&g_params.last_eaten[i - 1], NULL);
+		pthread_mutex_init(&g_params.fork_mutex[i - 1], NULL);
+		pthread_create(&philo[i - 1], NULL, philo_tread, (void *)a);
 		i++;
-	}	
+	}
 	pthread_exit(NULL);
+	i = 1;
+	while (i <= g_params.n_philo)
+	{
+		pthread_mutex_destroy(&g_params.fork_mutex[i - 1]);
+		i++;
+	}
+	if (g_params.stop)
+		pthread_mutex_unlock(&g_params.write);
+	pthread_mutex_destroy(&g_params.write);
+	free(philo);
+	free(g_params.fork_mutex);
 	return (0);
 }
