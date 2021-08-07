@@ -13,11 +13,13 @@ void	optional_input(int argc, char **argv)
 		}
 		else
 			g_params.optional = ft_atoi(argv[5]);
-		if (g_params.n_philo == 1)
-		{
-			printf("0\t1\thas taken a fork\n%d\t1\thas died\n", g_params.t_2_die);
-			exit(0);
-		}
+	}
+	if (g_params.n_philo == 1)
+	{
+		printf("0\t1\thas taken a fork\n");
+		usleep(g_params.t_2_die * 1000);
+		printf("%d\t1\thas died\n", g_params.t_2_die);
+		exit(0);
 	}
 }
 

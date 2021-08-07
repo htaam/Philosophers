@@ -3,9 +3,9 @@
 void	try_to_eat(int id)
 {
 	if (id % 2 == 0)
-		fork_n_eat1(id);
-	else
 		fork_n_eat2(id);
+	else
+		fork_n_eat1(id);
 }
 
 void	eating(int id)
@@ -23,8 +23,24 @@ void	eating(int id)
 			>= g_params.t_2_eat)
 			break ;
 	}
-	g_params.times_eaten[id - 1]++;
 	gettimeofday(&g_params.finish_eating[id - 1], NULL);
+}
+
+void	check_done_eating(int id)
+{
+	g_params.times_eaten[id - 1]++;
+	if (g_params.times_eaten[id - 1] == g_params.optional)
+	{
+		pthread_mutex_lock(&g_params.eaten_times);
+		g_params.n++;
+		pthread_mutex_unlock(&g_params.eaten_times);
+		if (g_params.n >= g_params.n_philo)
+		{
+			pthread_mutex_lock(&g_params.write);
+			g_params.stop = 1;
+			pthread_mutex_unlock(&g_params.write);
+		}
+	}
 }
 
 void	fork_n_eat1(int id)
@@ -46,6 +62,7 @@ void	fork_n_eat1(int id)
 	check_all_death();
 	write_message(id, "has taken a fork");
 	write_message(id, "is eating");
+	check_done_eating(id);
 	eating(id);
 	write_message(id, "is sleeping");
 	pthread_mutex_unlock(&g_params.fork_mutex[left]);
@@ -71,6 +88,7 @@ void	fork_n_eat2(int id)
 	check_all_death();
 	write_message(id, "has taken a fork");
 	write_message(id, "is eating");
+	check_done_eating(id);
 	eating(id);
 	write_message(id, "is sleeping");
 	pthread_mutex_unlock(&g_params.fork_mutex[right]);

@@ -17,7 +17,7 @@ typedef struct s_params
 	int				optional;
 	int				*times_eaten;
 	pthread_mutex_t	*fork_mutex;
-	pthread_mutex_t	get_time;
+	pthread_mutex_t	eaten_times;
 	pthread_mutex_t	write;
 	struct timeval	start_time;
 	struct timeval	end_time;
@@ -25,6 +25,7 @@ typedef struct s_params
 	struct timeval	*last_eaten;
 	struct timeval	*finish_eating;
 	struct timeval	*last_sleep;
+	int				n;
 	int				stop;
 }			t_params;
 
