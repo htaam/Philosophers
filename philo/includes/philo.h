@@ -23,12 +23,14 @@ typedef struct s_params
 	struct timeval	end_time;
 	struct timeval	last_time;
 	struct timeval	*last_eaten;
+	struct timeval	*finish_eating;
 	struct timeval	*last_sleep;
 	int				stop;
 }			t_params;
 
 extern t_params	g_params;
 
+void	handle_inputs(int argc, char **argv);
 void	fork_n_eat1(int id);
 void	fork_n_eat2(int id);
 int		time_difrence_in_ms(struct timeval start_time, struct timeval end_time);
@@ -36,5 +38,6 @@ void	write_message(int id, char	*str);
 void	try_to_eat(int id);
 void	go_to_sleep(int id);
 void	die(int id);
+void	check_all_death(void);
 
 #endif
