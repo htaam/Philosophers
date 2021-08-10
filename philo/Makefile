@@ -6,7 +6,7 @@
 #    By: tmatias <tmatias@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/15 15:21:21 by anleclab          #+#    #+#              #
-#    Updated: 2021/08/07 16:12:34 by tmatias          ###   ########.fr        #
+#    Updated: 2021/08/10 16:57:05 by tmatias          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC = main.c\
 		write_messages.c\
 		sleep.c\
 		inputs.c\
+		forks.c\
 		die.c
 SRCSFD = srcs/
 OBJSFD = objs/

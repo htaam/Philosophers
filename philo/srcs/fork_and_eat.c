@@ -54,19 +54,21 @@ void	fork_n_eat1(int id)
 		left = 0;
 	else
 		left = id;
-	pthread_mutex_lock(&g_params.fork_mutex[right]);
+	while (check_two_forks_state(right, left) == 1)
+		check_all_death();
+	grab_a_fork(right);
 	gettimeofday(&current, NULL);
 	check_all_death();
 	write_message(id, "has taken a fork");
-	pthread_mutex_lock(&g_params.fork_mutex[left]);
+	grab_a_fork(left);
 	check_all_death();
 	write_message(id, "has taken a fork");
 	write_message(id, "is eating");
 	check_done_eating(id);
 	eating(id);
 	write_message(id, "is sleeping");
-	pthread_mutex_unlock(&g_params.fork_mutex[left]);
-	pthread_mutex_unlock(&g_params.fork_mutex[right]);
+	release_a_fork(left);
+	release_a_fork(right);
 }
 
 void	fork_n_eat2(int id)
@@ -80,17 +82,19 @@ void	fork_n_eat2(int id)
 		left = 0;
 	else
 		left = id;
-	pthread_mutex_lock(&g_params.fork_mutex[left]);
+	while (check_two_forks_state(right, left) == 1)
+		check_all_death();
+	grab_a_fork(left);
 	gettimeofday(&current, NULL);
 	check_all_death();
 	write_message(id, "has taken a fork");
-	pthread_mutex_lock(&g_params.fork_mutex[right]);
+	grab_a_fork(right);
 	check_all_death();
 	write_message(id, "has taken a fork");
 	write_message(id, "is eating");
 	check_done_eating(id);
 	eating(id);
 	write_message(id, "is sleeping");
-	pthread_mutex_unlock(&g_params.fork_mutex[right]);
-	pthread_mutex_unlock(&g_params.fork_mutex[left]);
+	release_a_fork(right);
+	release_a_fork(left);
 }

@@ -8,6 +8,11 @@
 # include "libft.h"
 # include <stdbool.h>
 
+typedef struct s_fork
+{
+	int	state;
+}	t_fork;
+
 typedef struct s_params
 {
 	int				n_philo;
@@ -25,6 +30,7 @@ typedef struct s_params
 	struct timeval	*last_eaten;
 	struct timeval	*finish_eating;
 	struct timeval	*last_sleep;
+	t_fork			*fork;
 	int				n;
 	int				stop;
 }			t_params;
@@ -40,5 +46,8 @@ void	try_to_eat(int id);
 void	go_to_sleep(int id);
 void	die(int id);
 void	check_all_death(void);
+void	grab_a_fork(int	id);
+void	release_a_fork(int	id);
+int		check_two_forks_state(int	id1, int	id2);
 
 #endif
