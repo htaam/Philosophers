@@ -6,7 +6,7 @@
 /*   By: tmatias <tmatias@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 15:50:08 by tmatias           #+#    #+#             */
-/*   Updated: 2021/08/10 17:52:14 by tmatias          ###   ########.fr       */
+/*   Updated: 2021/08/12 18:10:50 by tmatias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	*philo_tread(void *a)
 
 	id = ft_atoi(a);
 	free(a);
-	usleep(500 * (id));
 	while (g_params.n <= g_params.n_philo)
 	{
 		if (!g_params.stop || g_params.n < g_params.n_philo)
@@ -75,6 +74,7 @@ void	end_stuff(void)
 	free(g_params.finish_eating);
 	free(g_params.times_eaten);
 	free(g_params.last_sleep);
+	free(g_params.fork);
 }
 
 int	main(int argc, char **argv)

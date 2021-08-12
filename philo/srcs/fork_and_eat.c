@@ -8,24 +8,6 @@ void	try_to_eat(int id)
 		fork_n_eat1(id);
 }
 
-void	eating(int id)
-{
-	struct timeval	current;
-	struct timeval	eat_start;
-
-	gettimeofday(&eat_start, NULL);
-	gettimeofday(&g_params.last_eaten[id - 1], NULL);
-	while (true)
-	{
-		gettimeofday(&current, NULL);
-		check_all_death();
-		if (time_difrence_in_ms(eat_start, current)
-			>= g_params.t_2_eat)
-			break ;
-	}
-	gettimeofday(&g_params.finish_eating[id - 1], NULL);
-}
-
 void	check_done_eating(int id)
 {
 	g_params.times_eaten[id - 1]++;
@@ -41,6 +23,26 @@ void	check_done_eating(int id)
 			pthread_mutex_unlock(&g_params.write);
 		}
 	}
+}
+
+void	eating(int id)
+{
+	struct timeval	current;
+	struct timeval	eat_start;
+
+	gettimeofday(&eat_start, NULL);
+	gettimeofday(&g_params.last_eaten[id - 1], NULL);
+	write_message(id, "is eating");
+	check_done_eating(id);
+	while (true)
+	{
+		gettimeofday(&current, NULL);
+		check_all_death();
+		if (time_difrence_in_ms(eat_start, current)
+			>= g_params.t_2_eat)
+			break ;
+	}
+	gettimeofday(&g_params.finish_eating[id - 1], NULL);
 }
 
 void	fork_n_eat1(int id)
@@ -63,9 +65,8 @@ void	fork_n_eat1(int id)
 	grab_a_fork(left);
 	check_all_death();
 	write_message(id, "has taken a fork");
-	write_message(id, "is eating");
-	check_done_eating(id);
 	eating(id);
+	check_done_eating(id);
 	write_message(id, "is sleeping");
 	release_a_fork(left);
 	release_a_fork(right);
@@ -82,7 +83,7 @@ void	fork_n_eat2(int id)
 		left = 0;
 	else
 		left = id;
-	while (check_two_forks_state(right, left) == 1)
+	while (check_two_forks_state(left, right) == 1)
 		check_all_death();
 	grab_a_fork(left);
 	gettimeofday(&current, NULL);
@@ -91,8 +92,6 @@ void	fork_n_eat2(int id)
 	grab_a_fork(right);
 	check_all_death();
 	write_message(id, "has taken a fork");
-	write_message(id, "is eating");
-	check_done_eating(id);
 	eating(id);
 	write_message(id, "is sleeping");
 	release_a_fork(right);

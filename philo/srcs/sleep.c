@@ -13,4 +13,5 @@ void	go_to_sleep(int id)
 			break ;
 	}
 	write_message(id, "is thinking");
+	usleep(500);
 }
