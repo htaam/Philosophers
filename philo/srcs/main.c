@@ -6,7 +6,7 @@
 /*   By: tmatias <tmatias@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 15:50:08 by tmatias           #+#    #+#             */
-/*   Updated: 2021/08/12 19:11:41 by tmatias          ###   ########.fr       */
+/*   Updated: 2021/08/16 17:58:54 by tmatias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	init(void)
 	while (i <= g_params.n_philo)
 	{
 		gettimeofday(&g_params.last_eaten[i - 1], NULL);
+		g_params.times_eaten[i - 1] = 0;
+		pthread_mutex_init(&g_params.fork_mutex[i - 1], NULL);
 		g_params.fork[i].state = 0;
 		i++;
 	}
@@ -91,8 +93,6 @@ int	main(int argc, char **argv)
 	while (i <= g_params.n_philo)
 	{
 		b[i - 1] = ft_itoa(i);
-		g_params.times_eaten[i - 1] = 0;
-		pthread_mutex_init(&g_params.fork_mutex[i - 1], NULL);
 		pthread_create(&philo[i - 1], NULL, philo_tread, (void *)b[i - 1]);
 		i++;
 	}
